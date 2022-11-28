@@ -1,0 +1,8 @@
+fastapi==0.79.0
+uvicorn[standard]==0.18.2
+pydantic==1.9.1
+python-multipart==0.0.5
+dependency-injector==4.40.0
+pymongo==4.3.2
+SQLAlchemy==1.4.43
+pymysql==1.0.2
