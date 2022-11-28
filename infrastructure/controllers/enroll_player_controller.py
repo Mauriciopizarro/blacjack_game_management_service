@@ -22,7 +22,7 @@ async def enroll_player(game_id: str, request_data: EnrollPlayerRequestData):
 
     try:
         enroll_player_service = EnrollPlayerService()
-        player_id = enroll_player_service.enroll_player(request_data.username, request_data.id, game_id)
+        player_id = enroll_player_service.enroll_player(request_data.username, request_data.user_id, game_id)
         return EnrollPlayerResponse(
             message="Player enrolled successfully",
             name=str(request_data.username),

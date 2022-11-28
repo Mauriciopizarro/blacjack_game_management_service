@@ -7,7 +7,6 @@ router = APIRouter()
 
 
 class StartGameRequestData(BaseModel):
-    username: str
     user_id: str
 
 
