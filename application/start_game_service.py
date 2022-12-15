@@ -27,4 +27,4 @@ class StartGameService:
         game.start(user_id)
         self.game_repository.update(game)
         self.publisher.send_message(message=game.dict(), topic="game_started")
-        logger.warning("Please trigger an event from a message broker")
+        logger.info("Game started in management_service and message sent to game_service")

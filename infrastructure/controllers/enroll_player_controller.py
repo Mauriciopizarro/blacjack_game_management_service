@@ -1,7 +1,7 @@
 from pydantic import BaseModel
 from fastapi import APIRouter, HTTPException, Depends
 from application.enroll_player_service import EnrollPlayerService
-from domain.exceptions import IncorrectGameID, CantEnrollPlayersStartedGame, AlreadyEnrolledPlayer
+from domain.exceptions import IncorrectGameID, CantEnrollPlayersStartedGame, AlreadyEnrolledPlayer, IncorrectObjectID
 
 router = APIRouter()
 
@@ -31,6 +31,10 @@ async def enroll_player(game_id: str, request_data: EnrollPlayerRequestData):
     except IncorrectGameID:
         raise HTTPException(
             status_code=404, detail='game_id not found',
+        )
+    except IncorrectObjectID:
+        raise HTTPException(
+            status_code=400, detail='incorrect game_id',
         )
     except CantEnrollPlayersStartedGame:
         raise HTTPException(

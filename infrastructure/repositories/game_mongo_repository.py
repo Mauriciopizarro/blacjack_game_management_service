@@ -1,7 +1,6 @@
 from pymongo import MongoClient
 from bson.objectid import ObjectId
-
-from domain.exceptions import IncorrectGameID
+from domain.exceptions import IncorrectGameID, IncorrectObjectID
 from domain.game import Game
 from domain.interfaces.game_repository import GameRepository
 from domain.player import Player
@@ -28,6 +27,8 @@ class GameMongoRepository(GameRepository):
         return client['game_management']["games"]
 
     def get(self, game_id: str) -> Game:
+        if not ObjectId.is_valid(game_id):
+            raise IncorrectObjectID()
         game_dict = self.db.find_one({"_id": ObjectId(game_id)})
         if not game_dict:
             raise IncorrectGameID()
