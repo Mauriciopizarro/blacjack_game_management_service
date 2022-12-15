@@ -20,7 +20,7 @@ class RabbitConnection:
         )
         self.channel = self.connection.channel()
         self.channel.queue_declare(queue="game_started")
-        logger.warning('Pika connection initialized')
+        logger.warning('Rabbit connection initialized')
 
     @classmethod
     def get_channel(cls):
@@ -54,3 +54,4 @@ class RabbitPublisher(Publisher):
             ),
             body=json.dumps(message)
         )
+        logger.info('Message published')

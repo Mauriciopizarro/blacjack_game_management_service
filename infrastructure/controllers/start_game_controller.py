@@ -1,7 +1,7 @@
 from fastapi import APIRouter, HTTPException, Depends
 from pydantic import BaseModel
 from application.start_game_service import StartGameService
-from domain.exceptions import IncorrectGameID, GameAlreadyStarted, IncorrectAdminId
+from domain.exceptions import IncorrectGameID, GameAlreadyStarted, IncorrectAdminId, IncorrectObjectID
 
 router = APIRouter()
 
@@ -19,6 +19,10 @@ def start_game(game_id: str, request_data: StartGameRequestData):
     except IncorrectGameID:
         raise HTTPException(
             status_code=404, detail='game_id not found',
+        )
+    except IncorrectObjectID:
+        raise HTTPException(
+            status_code=400, detail='incorrect game_id',
         )
     except GameAlreadyStarted:
         raise HTTPException(

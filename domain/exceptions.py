@@ -17,3 +17,6 @@ class GameAlreadyStarted(Exception):
 class IncorrectGameID(Exception):
     pass
 
+
+class IncorrectObjectID(Exception):
+    pass
