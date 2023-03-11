@@ -10,7 +10,7 @@ class StartGameRequestData(BaseModel):
     user_id: str
 
 
-@router.post("/start_game/{game_id}")
+@router.post("/game/start/{game_id}")
 def start_game(game_id: str, request_data: StartGameRequestData):
 
     try:

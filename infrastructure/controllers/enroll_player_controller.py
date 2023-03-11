@@ -17,7 +17,7 @@ class EnrollPlayerRequestData(BaseModel):
     user_id: str
 
 
-@router.post("/enroll_player/{game_id}", response_model=EnrollPlayerResponse)
+@router.post("/game/enroll_player/{game_id}", response_model=EnrollPlayerResponse)
 async def enroll_player(game_id: str, request_data: EnrollPlayerRequestData):
 
     try:
