@@ -21,7 +21,7 @@ class CreateGameRequestData(BaseModel):
     user_id: str
 
 
-@router.post("/create_game", response_model=CreateGameResponseModel)
+@router.post("/game/create", response_model=CreateGameResponseModel)
 async def create_game(request_data: CreateGameRequestData):
     create_game_service = CreateGameService()
     game = create_game_service.create_game(username=request_data.username, user_id=request_data.user_id)

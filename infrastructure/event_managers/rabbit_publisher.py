@@ -45,7 +45,6 @@ class RabbitPublisher(Publisher):
         """Method to publish message to RabbitMQ"""
         publish_queue_name = topic
         channel = RabbitConnection.get_channel()
-        connection = RabbitConnection.get_connection()
         channel.basic_publish(
             exchange='',
             routing_key=publish_queue_name,
@@ -54,4 +53,4 @@ class RabbitPublisher(Publisher):
             ),
             body=json.dumps(message)
         )
-        logger.info('Message published')
+        logger.info(f'Message published in topic {topic}')
