@@ -4,6 +4,7 @@ from domain.exceptions import IncorrectGameID, IncorrectObjectID
 from domain.game import Game
 from domain.interfaces.game_repository import GameRepository
 from domain.player import Player
+from config import settings
 
 
 class GameMongoRepository(GameRepository):
@@ -23,7 +24,7 @@ class GameMongoRepository(GameRepository):
 
     @staticmethod
     def get_database():
-        client = MongoClient("mongodb://mongo:27017/blackjack")
+        client = MongoClient(settings.DATABASE_MONGO_URL)
         return client['game_management']["games"]
 
     def get(self, game_id: str) -> Game:
