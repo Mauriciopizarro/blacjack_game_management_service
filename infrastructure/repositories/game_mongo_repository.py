@@ -45,8 +45,8 @@ class GameMongoRepository(GameRepository):
         game_dict = self.db.find_one({"status": "created"})
         return self.get(str(game_dict["_id"]))
 
-    def has_created_game(self):
-        game_dict = self.db.find_one({"status": "created"})
+    def has_created_game(self, user_id):
+        game_dict = self.db.find_one({"status": "created", "admin.user_id": user_id})
         if game_dict:
             return True
         return False
