@@ -1,49 +1,14 @@
 import json
 import pika
 import uuid
+from domain.interfaces.publisher import Publisher
+from infrastructure.event_managers.rabbit_conection import RabbitConnection
 from logging.config import dictConfig
 import logging
-from config import settings
-from domain.interfaces.publisher import Publisher
 from infrastructure.logging import LogConfig
-from urllib.parse import urlparse
 
 dictConfig(LogConfig().dict())
 logger = logging.getLogger("blackjack")
-
-
-class RabbitConnection:
-
-    instance = None
-
-    def __init__(self):
-        credentials = pika.PlainCredentials(settings.RABBIT_USERNAME, settings.RABBIT_PASSWORD)
-        self.connection = pika.BlockingConnection(
-            pika.ConnectionParameters(host=settings.RABBIT_HOST,
-                                      heartbeat=9999,
-                                      blocked_connection_timeout=300,
-                                      credentials=credentials,
-                                      virtual_host=settings.RABBIT_VHOST)
-        )
-        self.channel = self.connection.channel()
-        self.channel.queue_declare(queue="game_started")
-        logger.warning('Rabbit connection initialized')
-
-    @classmethod
-    def get_channel(cls):
-        instance = cls.init_connection()
-        return instance.channel
-
-    @classmethod
-    def get_connection(cls):
-        instance = cls.init_connection()
-        return instance.connection
-
-    @classmethod
-    def init_connection(cls):
-        if not cls.instance:
-            cls.instance = cls()
-        return cls.instance
 
 
 class RabbitPublisher(Publisher):
