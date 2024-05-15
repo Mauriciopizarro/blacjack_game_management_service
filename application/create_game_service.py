@@ -13,9 +13,9 @@ class CreateGameService:
         self.game_repository = game_repository
 
     def create_game(self, user_id: str, username: str):
-        if self.game_repository.has_created_game(user_id):
-            game_created = self.game_repository.get_created_game()
-            raise GameAlreadyCreated(game_created.id)
+        created_game = self.game_repository.has_created_game(user_id)
+        if created_game:
+            raise GameAlreadyCreated(created_game)
         admin = Player(name=username, user_id=user_id)
         game = Game(status="created", players=[admin], admin=admin)
         response_game = self.game_repository.save(game)

@@ -41,15 +41,9 @@ class GameMongoRepository(GameRepository):
         game = Game(status=status, players=players, id=game_id, admin=admin)
         return game
 
-    def get_created_game(self) -> Game:
-        game_dict = self.db.find_one({"status": "created"})
-        return self.get(str(game_dict["_id"]))
-
     def has_created_game(self, user_id):
         game_dict = self.db.find_one({"status": "created", "admin.user_id": user_id})
-        if game_dict:
-            return True
-        return False
+        return str(game_dict["_id"]) if game_dict else None
 
     def save(self, game: Game) -> Game:
         db_game = self.db.insert_one(game.dict())
