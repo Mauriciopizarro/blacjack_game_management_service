@@ -17,9 +17,5 @@ class GameRepository(ABC):
         pass
 
     @abstractmethod
-    def get_created_game(self) -> Game:
-        pass
-
-    @abstractmethod
     def update(self, game: Game) -> Game:
         pass
