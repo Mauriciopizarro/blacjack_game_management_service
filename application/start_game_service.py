@@ -1,7 +1,5 @@
-from dependency_injector.wiring import Provide, inject
 from domain.interfaces.game_repository import GameRepository
 from domain.interfaces.publisher import Publisher
-from infrastructure.injector import Injector
 from logging.config import dictConfig
 import logging
 from infrastructure.logging import LogConfig
@@ -13,11 +11,10 @@ logger = logging.getLogger("blackjack")
 
 class StartGameService:
 
-    @inject
     def __init__(
             self,
-            game_repository: GameRepository = Provide[Injector.game_management_repo],
-            publisher: Publisher = Provide[Injector.publisher]
+            game_repository: GameRepository,
+            publisher: Publisher
     ):
         self.game_repository = game_repository
         self.publisher = publisher

@@ -1,13 +1,10 @@
 from domain.interfaces.game_repository import GameRepository
 from domain.player import Player
-from dependency_injector.wiring import Provide, inject
-from infrastructure.injector import Injector
 
 
 class EnrollPlayerService:
 
-    @inject
-    def __init__(self, game_repository: GameRepository = Provide[Injector.game_management_repo]):
+    def __init__(self, game_repository: GameRepository):
         self.game_repository = game_repository
         self.player_id_created = None
 
