@@ -2,14 +2,11 @@ from domain.game import Game
 from domain.exceptions import GameAlreadyCreated
 from domain.interfaces.game_repository import GameRepository
 from domain.player import Player
-from dependency_injector.wiring import Provide, inject
-from infrastructure.injector import Injector
 
 
 class CreateGameService:
 
-    @inject
-    def __init__(self, game_repository: GameRepository = Provide[Injector.game_management_repo]):
+    def __init__(self, game_repository: GameRepository):
         self.game_repository = game_repository
 
     def create_game(self, user_id: str, username: str):

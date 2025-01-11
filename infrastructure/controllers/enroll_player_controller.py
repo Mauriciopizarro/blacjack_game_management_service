@@ -1,6 +1,7 @@
 from pydantic import BaseModel
+from dependency_injector.wiring import Provide, inject
+from infrastructure.injector import Injector
 from fastapi import APIRouter, HTTPException, Depends
-from application.enroll_player_service import EnrollPlayerService
 from domain.exceptions import IncorrectGameID, CantEnrollPlayersStartedGame, AlreadyEnrolledPlayer, IncorrectObjectID
 
 router = APIRouter()
@@ -18,10 +19,11 @@ class EnrollPlayerRequestData(BaseModel):
 
 
 @router.post("/game/enroll_player/{game_id}", response_model=EnrollPlayerResponse)
-async def enroll_player(game_id: str, request_data: EnrollPlayerRequestData):
-
+@inject
+async def enroll_player(game_id: str,
+                        request_data: EnrollPlayerRequestData,
+                        enroll_player_service = Depends(Provide[Injector.enroll_player_service])):
     try:
-        enroll_player_service = EnrollPlayerService()
         player_id = enroll_player_service.enroll_player(request_data.username, request_data.user_id, game_id)
         return EnrollPlayerResponse(
             message="Player enrolled successfully",

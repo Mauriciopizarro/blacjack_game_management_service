@@ -1,7 +1,8 @@
 from fastapi import APIRouter, HTTPException, Depends
 from pydantic import BaseModel
-from application.start_game_service import StartGameService
 from domain.exceptions import IncorrectGameID, GameAlreadyStarted, IncorrectAdminId, IncorrectObjectID
+from dependency_injector.wiring import Provide, inject
+from infrastructure.injector import Injector
 
 router = APIRouter()
 
@@ -11,11 +12,12 @@ class StartGameRequestData(BaseModel):
 
 
 @router.post("/game/start/{game_id}")
-def start_game(game_id: str, request_data: StartGameRequestData):
-
+@inject
+def start_game(game_id: str,
+               request_data: StartGameRequestData,
+               start_game_service = Depends(Provide[Injector.start_game_service])):
     try:
-        star_game_service = StartGameService()
-        star_game_service.start_game(game_id, request_data.user_id)
+        start_game_service.start_game(game_id, request_data.user_id)
     except IncorrectGameID:
         raise HTTPException(
             status_code=404, detail='game_id not found',
