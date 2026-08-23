@@ -45,6 +45,25 @@ class GameMongoRepository(GameRepository):
         game_dict = self.db.find_one({"status": "created", "admin.user_id": user_id})
         return str(game_dict["_id"]) if game_dict else None
 
+    def get_games_by_user(self, user_id):
+        cursor = self.db.find({
+            "$or": [
+                {"admin.user_id": user_id},
+                {"players.user_id": user_id}
+            ]
+        })
+        games = []
+        for game_dict in cursor:
+            games.append({
+                "game_id": str(game_dict["_id"]),
+                "status": game_dict.get("status"),
+                "admin": {
+                    "name": game_dict.get("admin", {}).get("name"),
+                    "user_id": game_dict.get("admin", {}).get("user_id")
+                }
+            })
+        return games
+
     def save(self, game: Game) -> Game:
         db_game = self.db.insert_one(game.dict())
         return Game(status=game.status, players=game.players, id=str(db_game.inserted_id), admin=game.admin)
