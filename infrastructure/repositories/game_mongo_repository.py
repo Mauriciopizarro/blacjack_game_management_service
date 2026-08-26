@@ -46,10 +46,16 @@ class GameMongoRepository(GameRepository):
         return str(game_dict["_id"]) if game_dict else None
 
     def get_games_by_user(self, user_id):
+        # Solo se retornan los juegos que no estan finalizados (estado "finished")
         cursor = self.db.find({
-            "$or": [
-                {"admin.user_id": user_id},
-                {"players.user_id": user_id}
+            "$and": [
+                {"status": {"$ne": "finished"}},
+                {
+                    "$or": [
+                        {"admin.user_id": user_id},
+                        {"players.user_id": user_id}
+                    ]
+                }
             ]
         })
         games = []
