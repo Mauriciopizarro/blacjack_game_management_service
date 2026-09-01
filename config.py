@@ -2,10 +2,7 @@ from pydantic import BaseSettings
 
 
 class Settings(BaseSettings):
-    RABBIT_USERNAME: str
-    RABBIT_PASSWORD: str
-    RABBIT_HOST: str
-    RABBIT_VHOST: str
+    GAME_SERVICE_URL: str
     DATABASE_MONGO_URL: str
 
     class Config:
